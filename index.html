@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Battle city</title>
+</head>
+<body>
+    <!-- 1) Loader -->
+    <!-- 2) Application -->
+    <!-- 3) Rendring -->
+    <script src="engine/Loader.js"></script>
+
+    <script>
+
+        
+const { Loader } = GameEngine
+
+const loader = new Loader
+
+loader.addImage('bunny', 'static/01.png')
+loader.addImage('bunny', 'static/02.jpg')
+loader.addJson('persons', 'static/persons.json')
+
+loader.load(() => {
+    console.log('Images loaded')
+})
+        
+Loader.loadImage('static/01.png', 'static/02.jpg').then(image => {
+    console.log(image)
+    document.body.append(image)
+})
+
+    </script>
+</body>
+</html>
