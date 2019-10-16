@@ -27,7 +27,12 @@ loader.load(() => {
     console.log('Images loaded')
 })
         
-Loader.loadImage('static/01.png', 'static/02.jpg').then(image => {
+Loader.loadImage('static/01.png').then(image => {
+    console.log(image)
+    document.body.append(image)
+})
+
+Loader.loadImage('static/02.jpg').then(image => {
     console.log(image)
     document.body.append(image)
 })
