@@ -3,33 +3,46 @@
 
     class Loader {
         constructor () {
+            // очередь на загрузку - хранит данные, которые должны быть загружены методом load()
             this.loadOrder = {
                 images: [],
                 jsons: []
             }
-
+            // хранилище ресурсов - хранит ресурсы, загруженные метод load() из очереди загрузки
             this.resources = {
                 images: [],
                 jsons: []
             }
         }
-
+        // добавляет изображение в очередь на загрузку
         addImage (name, src) {
             this.loadOrder.images.push({ name, src })
         }
-
+        // добавляет json файл в очередь на загрузку
         addJson (name, address) {
             this.loadOrder.jsons.push({ name, address })
         }
 
+        getImage (name) {
+            return this.resources.images[name]
+        }
+
+        getJson (name) {
+            return this.resources.jsons[name]
+        }
+        // загружает данные из очереди загрузки (loadOrder) и сохраняет их в хранилище ресурсов (resources)
+        // после загрузки ресурсов вызываем callback-функцию переданную в качестве аргумента
         load (callback) {
             const promises = []
-
+            // обрабатываем все изображения из очереди загрузки
             for (const imageData of this.loadOrder.images) {
-                const { name, src } = imageData
-
+                // деструктуризация объекта - чтобы не обращаться к свойствам объекта, сразу их вытаскиваем в переменные
+                const { name, src } = imageData   // свойства name, src текущего изображения записываем в соответствующие переменные
+                // в текущий промис записываем результат выполнения метода загрузки изображения (return new Promise())
+                // then - подписываем на результат выполнения данного промиса и выполняем callback-функцию
                 const promise = Loader
-                    .loadImage(src)
+                    .loadImage(src)  // загружаем текущее изображение из указанного пути
+                    // выполняем callback-функцию после успешной загрузки изображения и подписываемся на resolve()
                     .then(image => {
                         this.resources.images[name] = image
                         

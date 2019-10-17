@@ -11,31 +11,63 @@
     <!-- 2) Application -->
     <!-- 3) Rendring -->
     <script src="engine/Loader.js"></script>
-
+    <script src="engine/Renderer.js"></script>
+    <script src="engine/Sprite.js"></script>
+    <script src="engine/Container.js"></script>
     <script>
 
         
-const { Loader } = GameEngine
+const { Loader, Renderer, Sprite, Container } = GameEngine
 
+let sprite = null
+let sprite2 = null
 const loader = new Loader
+const renderer = new Renderer({
+    width: 500,
+    height: 500,
+    background: 'gray',
 
-loader.addImage('bunny', 'static/01.png')
-loader.addImage('bunny', 'static/02.jpg')
+    update (timestamp) {
+        if (!sprite) {
+            return
+        }
+
+        sprite.frame.x = sprite.texture.width /2 +200 * Math.random(timestamp / 200)//меняем координаты фрейма у самого спрайта
+        sprite.frame.y = sprite.texture.height /2 +200 * Math.random(timestamp / 200)
+
+        sprite.x = renderer.canvas.width /2 +200 * Math.cos(timestamp / 200)//меняем координаты самого спрайта
+        sprite.y = renderer.canvas.height /2 +200 * Math.sin(timestamp / 200)
+    }
+})
+
+document.body.append(renderer.canvas)//добавим канвас на страницу
+loader.addImage('01', 'static/01.png')
+loader.addImage('02', 'static/02.jpg')
 loader.addJson('persons', 'static/persons.json')
 
 loader.load(() => {
-    console.log('Images loaded')
-})
+    sprite = new Sprite(loader.getImage('01'), {
+        scale: 0.25,
+        anchorX: 0.5,
+        anchorY: 0.5
         
-Loader.loadImage('static/01.png').then(image => {
-    console.log(image)
-    document.body.append(image)
+    })//создаем спрайт
+    const container = new Container()
+    renderer.stage.add(container)
+    container.add(sprite)
+    //
+    sprite2 = new Sprite(loader.getImage('02'), {
+        scale: 0.5,
+        anchorX: 0.5,
+        anchorY: 0.5
+        
+    })//создаем спрайт
+    const container2 = new Container()
+    renderer.stage.add(container2)
+    container2.add(sprite2)
 })
 
-Loader.loadImage('static/02.jpg').then(image => {
-    console.log(image)
-    document.body.append(image)
-})
+
 
     </script>
 </body>
