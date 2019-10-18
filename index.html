@@ -7,20 +7,21 @@
     <title>Battle city</title>
 </head>
 <body>
-    <!-- 1) Loader -->
-    <!-- 2) Application -->
-    <!-- 3) Rendring -->
+    <script src="engine/DisplayObject.js"></script>
+    <script src="engine/Container.js"></script>
     <script src="engine/Loader.js"></script>
     <script src="engine/Renderer.js"></script>
     <script src="engine/Sprite.js"></script>
-    <script src="engine/Container.js"></script>
-    <script>
 
-        
+    <script>
 const { Loader, Renderer, Sprite, Container } = GameEngine
 
-let sprite = null
+let sprite1 = null
 let sprite2 = null
+let sprite3 = null
+let container = null
+let container2 = null
+
 const loader = new Loader
 const renderer = new Renderer({
     width: 500,
@@ -28,47 +29,109 @@ const renderer = new Renderer({
     background: 'gray',
 
     update (timestamp) {
-        if (!sprite) {
+        if (!sprite1 || !sprite2 || !sprite3) {
             return
         }
 
-        sprite.frame.x = sprite.texture.width /2 +200 * Math.random(timestamp / 200)//меняем координаты фрейма у самого спрайта
-        sprite.frame.y = sprite.texture.height /2 +200 * Math.random(timestamp / 200)
+        container.rotation = timestamp / 1000
+        container2.rotation = timestamp / 500
+        sprite1.rotation = timestamp / 1000
+        sprite2.rotation = -timestamp / 200
+        sprite3.rotation = -timestamp / 10000
+        // sprite.rotation = 0
 
-        sprite.x = renderer.canvas.width /2 +200 * Math.cos(timestamp / 200)//меняем координаты самого спрайта
-        sprite.y = renderer.canvas.height /2 +200 * Math.sin(timestamp / 200)
-    }
+        // sprite.frame.x = sprite.texture.width / 2 + 200 * Math.cos(timestamp / 200)
+        // sprite.frame.y = sprite.texture.height / 2 + 200 * Math.sin(timestamp / 200)
+
+        // sprite.x = renderer.canvas.width / 2 + 200 * Math.cos(timestamp / 200)
+        // sprite.y = renderer.canvas.height / 2 + 200 * Math.sin(timestamp / 200)
+    } 
 })
 
-document.body.append(renderer.canvas)//добавим канвас на страницу
-loader.addImage('01', 'static/01.png')
-loader.addImage('02', 'static/02.jpg')
+document.body.append(renderer.canvas)
+
+loader.addImage('bunny', 'static/bunny.jpeg')
+loader.addImage('animal', 'static/03.jpg')
+loader.addImage('dog', 'static/dog.jpg')
 loader.addJson('persons', 'static/persons.json')
 
 loader.load(() => {
-    sprite = new Sprite(loader.getImage('01'), {
+    sprite1 = new Sprite(loader.getImage('bunny'), {
+        x: 100,
+        y: 200,
+        rotation: Math.PI / 2,
         scale: 0.25,
         anchorX: 0.5,
         anchorY: 0.5
-        
-    })//создаем спрайт
-    const container = new Container()
-    renderer.stage.add(container)
-    container.add(sprite)
-    //
-    sprite2 = new Sprite(loader.getImage('02'), {
-        scale: 0.5,
+    })
+
+    sprite2 = new Sprite(loader.getImage('animal'), {
+        x: 200,
+        y: 200,
+        rotation: Math.PI / 4,
+        scale: 0.4,
         anchorX: 0.5,
         anchorY: 0.5
-        
-    })//создаем спрайт
-    const container2 = new Container()
+    })
+    sprite3 = new Sprite(loader.getImage('dog'), {
+        x: 100,
+        y: 200,
+        rotation: Math.PI / 8,
+        scale: 0.4,
+        anchorX: 0.5,
+        anchorY: 0.5
+    })
+
+    container = new Container()
+    container.x = 100
+    container.y = 100
+    container.rotation = Math.PI / 4
+    container.anchorX = 0.5
+    container.anchorY = 0.5
+    container.width = renderer.canvas.width
+    container.height = renderer.canvas.height
+
+    renderer.stage.add(container)
+    container.add(sprite1)
+    container.add(sprite2)
+
+
+//Создадим второй контейнер
+
+    container2 = new Container()
+    container2.x = 50
+    container2.y = 250
+    container2.rotation = Math.PI / 8
+    container2.anchorX = 0.5
+    container2.anchorY = 0.5
+    container2.width = renderer.canvas.width
+    container2.height = renderer.canvas.height
+
+    renderer.stage.add(container)
     renderer.stage.add(container2)
+    container.add(sprite1)
+    container.add(sprite2)
+
+    
     container2.add(sprite2)
+    container2.add(sprite3)
+
+    // sprite.absoluteX = 0
+    // sprite.absoluteY = 0
+
+    // sprite.frame.x = 278
+    // sprite.frame.y = 250
+    // sprite.frame.width = 200
+    // sprite.frame.height = 170
+
+    // sprite.width = 200
+    // sprite.height = 170
+
+    // sprite.x = 100
+    // sprite.y = 300
+    // sprite.width = 100
+    // sprite.height = 100
 })
-
-
-
     </script>
 </body>
 </html>

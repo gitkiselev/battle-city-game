@@ -1,5 +1,5 @@
-;(function() {
-    'use strict';
+;(function () {
+    'use strict'
 
     class Renderer {
         constructor (args = {}) {
@@ -13,11 +13,12 @@
 
             this.stage = new GameEngine.Container()
 
-            requestAnimationFrame(timestamp => this.tick(timestamp))//timestamp время существования нашей страницы
+            requestAnimationFrame(timestamp => this.tick(timestamp))
         }
 
         get displayObjects () {
             return _getDisplayObjects(this.stage)
+
             function _getDisplayObjects (container, result = []) {
                 for (const displayObject of container.displayObjects) {
                     if (displayObject instanceof GameEngine.Container) {
@@ -28,25 +29,22 @@
                         result.push(displayObject)
                     }
                 }
+
                 return result
             }
         }
 
-        tick(timestamp) {
-            
+        tick (timestamp) {
             this.update(timestamp)
-            this.clear()// будем очищать перед каждым обновлением полотна
+            this.clear()
             this.render()
-            requestAnimationFrame(timestamp => this.tick(timestamp))//вызываем рекурсивно функцию tick
+
+            requestAnimationFrame(timestamp => this.tick(timestamp))
         }
 
         render () {
             this.stage.draw(this.canvas, this.context)
         }
-
-        // draw(callback) {
-        //     callback(this.canvas, this.context)
-        // }
 
         clear () {
             this.context.fillStyle = this.background
@@ -55,6 +53,7 @@
             this.context.fill()
         }
     }
+
     window.GameEngine = window.GameEngine || {}
     window.GameEngine.Renderer = Renderer
 })();
